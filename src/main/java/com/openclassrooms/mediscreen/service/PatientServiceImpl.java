@@ -28,7 +28,6 @@ public class PatientServiceImpl implements PatientService{
         Patient original = patientRepository.getReferenceById(patient.getId());
         original.setAddress(patient.getAddress());
         original.setDob(patient.getDob());
-        original.setNote(patient.getNote());
         original.setSex(patient.getSex());
         original.setPhone(patient.getPhone());
 

@@ -15,7 +15,7 @@ import java.sql.Date;
 //@Builder
 public class Patient {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -30,8 +30,6 @@ public class Patient {
     private String phone;
     @Column
     private Date dob;
-    @Column
-    private String note;
 
     public Patient(String given, String family, String sex, String address, String phone, Date dob, String note) {
         this.given = given;
@@ -40,7 +38,6 @@ public class Patient {
         this.address = address;
         this.phone = phone;
         this.dob = dob;
-        this.note = note;
     }
 
 }

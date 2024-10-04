@@ -1,0 +1,36 @@
+version: '3.1'
+services:
+  demographics:
+    container_name: app-springboot-postgresql
+    environment:
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATASOURCE_USER=postgres
+      - SPRING_DATASOURCE_URL:jdbc:postgresql://dbpostgresql:5432/demographics
+#    image: app-springboot-postgresql
+    build: ./
+    ports:
+      - "8081:8081"
+    depends_on:
+      - dbpostgresql
+    networks:
+      - springboot-network
+
+  dbpostgresql:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=demographics
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - springboot-network
+
+networks:
+  springboot-network:
+
+volumes:
+  postgres_data:
+
