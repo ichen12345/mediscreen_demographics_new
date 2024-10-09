@@ -39,5 +39,12 @@ public class Patient {
         this.phone = phone;
         this.dob = dob;
     }
+    public Patient(Long id, String sex, String address, String phone, Date dob, String note) {
+        this.id = id;
+        this.sex = sex;
+        this.address = address;
+        this.phone = phone;
+        this.dob = dob;
+    }
 
 }

@@ -2,20 +2,29 @@ package com.openclassrooms.mediscreen.service;
 
 import com.openclassrooms.mediscreen.entity.Patient;
 import com.openclassrooms.mediscreen.repository.PatientRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class PatientServiceImpl implements PatientService{
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     PatientRepository patientRepository;
 
     @Override
     public Patient addPatient(Patient patient) {
-        return patientRepository.save(patient);
+        Patient savedPatient = patientRepository.save(patient);
+        entityManager.flush(); // Force flush to the database
+        return savedPatient;
     }
 
     @Override
@@ -25,14 +34,15 @@ public class PatientServiceImpl implements PatientService{
 
     @Override
     public Patient updatePatient(Patient patient) {
-        Patient original = patientRepository.getReferenceById(patient.getId());
+        Patient original = patientRepository.findById(patient.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        original = patientRepository.getReferenceById(patient.getId());
         original.setAddress(patient.getAddress());
         original.setDob(patient.getDob());
         original.setSex(patient.getSex());
         original.setPhone(patient.getPhone());
 
-        return original;
-
+        return patientRepository.save(original);
     }
 
     @Override

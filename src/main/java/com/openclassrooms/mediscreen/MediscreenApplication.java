@@ -38,7 +38,7 @@ public class MediscreenApplication {
 			Date p1DobSql = Date.valueOf(p1Dob);
 
 			LocalDate p2Dob = LocalDate.of(1990, 9, 3);
-			Date p2DobSql = Date.valueOf(p1Dob);
+			Date p2DobSql = Date.valueOf(p2Dob);
 
 			Patient p1 = new Patient("Lily", "Chen", "f", "123 Apple Street", "11233258", p1DobSql, "sth");
 			Patient p2 = new Patient("Anya", "Chen", "f", "123 Orange Street", "11233258", p2DobSql, "");
