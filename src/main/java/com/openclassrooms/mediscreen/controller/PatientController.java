@@ -35,9 +35,9 @@ public class PatientController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT) //204
-    @DeleteMapping
-    public void delete(@RequestBody Patient patient) {
-        patientService.deletePatient(patient);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        patientService.deletePatient(id);
     }
 
 }
