@@ -17,7 +17,6 @@ public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column
     private String given;
     @Column
@@ -31,7 +30,7 @@ public class Patient {
     @Column
     private Date dob;
 
-    public Patient(String given, String family, String sex, String address, String phone, Date dob, String note) {
+    public Patient(String given, String family, String sex, String address, String phone, Date dob) {
         this.given = given;
         this.family = family;
         this.sex = sex;
@@ -39,12 +38,12 @@ public class Patient {
         this.phone = phone;
         this.dob = dob;
     }
-    public Patient(Long id, String sex, String address, String phone, Date dob, String note) {
-        this.id = id;
-        this.sex = sex;
-        this.address = address;
-        this.phone = phone;
-        this.dob = dob;
-    }
+//    public Patient(Long id, String sex, String address, String phone, Date dob, String note) {
+//        this.id = id;
+//        this.sex = sex;
+//        this.address = address;
+//        this.phone = phone;
+//        this.dob = dob;
+//    }
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("patient")
+@RequestMapping("patients")
 public class PatientController {
     @Autowired
     PatientService patientService;
@@ -19,6 +19,11 @@ public class PatientController {
     @GetMapping
     public List<Patient> findAll() {
         return patientService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Patient findAPatient(@PathVariable Long id) {
+        return patientService.findAPatient(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED) // 201

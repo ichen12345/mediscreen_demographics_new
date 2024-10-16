@@ -52,4 +52,9 @@ public class PatientServiceImpl implements PatientService{
         }
         patientRepository.deleteById(id);
     }
+
+    @Override
+    public Patient findAPatient(Long id) {
+        return patientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    }
 }

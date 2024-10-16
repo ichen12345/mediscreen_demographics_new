@@ -34,14 +34,14 @@ public class MediscreenApplication {
 
 			System.out.println("Running.....");
 
-			LocalDate p1Dob = LocalDate.of(2020, 1, 8);
+			LocalDate p1Dob = LocalDate.of(1966, 12, 30);
 			Date p1DobSql = Date.valueOf(p1Dob);
 
-			LocalDate p2Dob = LocalDate.of(1990, 9, 3);
+			LocalDate p2Dob = LocalDate.of(1945, 6, 24);
 			Date p2DobSql = Date.valueOf(p2Dob);
 
-			Patient p1 = new Patient("Lily", "Chen", "f", "123 Apple Street", "11233258", p1DobSql, "sth");
-			Patient p2 = new Patient("Anya", "Chen", "f", "123 Orange Street", "11233258", p2DobSql, "");
+			Patient p1 = new Patient("Test", "TestNone", "F", "1 Brookside St", "100-222-3333", p1DobSql);
+			Patient p2 = new Patient("Test", "TestBorderline", "M", "2 High St", "200-333-4444", p2DobSql);
 
 
 			patientRepository.saveAll(List.of(p1, p2));
