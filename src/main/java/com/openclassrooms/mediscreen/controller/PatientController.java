@@ -2,12 +2,18 @@ package com.openclassrooms.mediscreen.controller;
 
 import com.openclassrooms.mediscreen.entity.Patient;
 import com.openclassrooms.mediscreen.service.PatientService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -26,9 +32,10 @@ public class PatientController {
         return patientService.findAPatient(id);
     }
 
+    @Validated
     @ResponseStatus(HttpStatus.CREATED) // 201
     @PostMapping("/add")
-    public Patient create(@RequestBody Patient patient) {
+    public Patient create(@Valid @RequestBody Patient patient) {
         return patientService.addPatient(patient);
     }
 
@@ -43,6 +50,19 @@ public class PatientController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         patientService.deletePatient(id);
+    }
+
+    // Exception handler for validation errors
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return ResponseEntity.badRequest().body(errors);
     }
 
 }
