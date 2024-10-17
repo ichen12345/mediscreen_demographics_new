@@ -42,7 +42,6 @@ public class PatientController {
     @PutMapping
     public Patient update(@RequestBody Patient patient) {
         Patient response = patientService.updatePatient(patient);
-//        return patientService.updatePatient(patient);
         return response;
     }
 
