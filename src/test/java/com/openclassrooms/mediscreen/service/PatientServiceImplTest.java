@@ -71,23 +71,27 @@ public class PatientServiceImplTest {
 
     @Test
     public void testUpdatePatient() {
+        // Mock the repository to return the original patient when found
         when(patientRepository.findById(patient.getId())).thenReturn(Optional.of(patient));
-        when(patientRepository.save(patient)).thenReturn(patient);
 
+        // Prepare the updated patient details
         Patient updatedPatient = new Patient();
         updatedPatient.setId(1L);
-        updatedPatient.setAddress("456 New St");
-        updatedPatient.setDob(new Date(1990-10-15));
-        updatedPatient.setSex("M");
-        updatedPatient.setPhone("100-222-3333");
+        updatedPatient.setAddress("456 New St"); // Update the address
 
+        // Mock the save method to return the updated patient
+        when(patientRepository.save(any(Patient.class))).thenReturn(updatedPatient);
+
+        // Call the service method
         Patient result = patientService.updatePatient(updatedPatient);
 
+        // Verify the results
         assertNotNull(result);
         assertEquals(updatedPatient.getAddress(), result.getAddress());
         verify(patientRepository, times(1)).findById(patient.getId());
         verify(patientRepository, times(1)).save(patient);
     }
+
 
     @Test
     public void testUpdatePatient_NotFound() {

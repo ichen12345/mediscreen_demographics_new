@@ -36,7 +36,6 @@ public class PatientServiceImpl implements PatientService{
     public Patient updatePatient(Patient patient) {
         Patient original = patientRepository.findById(patient.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
-        original = patientRepository.getReferenceById(patient.getId());
         original.setAddress(patient.getAddress());
         original.setDob(patient.getDob());
         original.setSex(patient.getSex());
