@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Patients</title>
+</head>
+<body>
+<h1>Patients</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>DOB</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="patient : ${patients}">
+        <td th:text="${patient.id}"></td>
+        <td th:text="${patient.given} + ' ' + ${patient.family}"></td>
+        <td th:text="${patient.address}"></td>
+        <td th:text="${#dates.format(patient.dob, 'yyyy-MM-dd')}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

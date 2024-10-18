@@ -5,23 +5,16 @@ import com.openclassrooms.mediscreen.service.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-@RestController
-@RequestMapping("/api/patients")
-public class PatientController {
+@Controller
+@RequestMapping("/patients")
+public class ThymeleafController {
     @Autowired
     PatientService patientService;
 
@@ -35,12 +28,12 @@ public class PatientController {
 //        return patientService.findAPatient(id);
 //    }
 //
-    @Validated
-    @ResponseStatus(HttpStatus.CREATED) // 201
-    @PostMapping("/add")
-    public Patient create(@Valid @RequestBody Patient patient) {
-        return patientService.addPatient(patient);
-    }
+//    @Validated
+//    @ResponseStatus(HttpStatus.CREATED) // 201
+//    @PostMapping("/add")
+//    public Patient create(@Valid @RequestBody Patient patient) {
+//        return patientService.addPatient(patient);
+//    }
 //
 //    @PutMapping
 //    public Patient update(@RequestBody Patient patient) {

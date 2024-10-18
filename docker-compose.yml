@@ -23,14 +23,14 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
       POSTGRES_DB: demographics
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - springboot-network
 
 networks:
   springboot-network:
 
-#volumes:
-#  postgres_data:
+volumes:
+  postgres_data:
 
