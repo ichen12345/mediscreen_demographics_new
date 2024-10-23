@@ -25,41 +25,35 @@ public class PatientController {
     @Autowired
     PatientService patientService;
 
-//    @GetMapping
-//    public List<Patient> findAll() {
-//        return patientService.findAll();
-//    }
+    @GetMapping
+    public List<Patient> findAll() {
+        return patientService.findAll();
+    }
 
-//    @GetMapping("/{id}")
-//    public Patient findAPatient(@PathVariable Long id) {
-//        return patientService.findAPatient(id);
-//    }
-//
+    @GetMapping("/{id}")
+    public Patient findAPatient(@PathVariable Long id) {
+        return patientService.findAPatient(id);
+    }
+
     @Validated
     @ResponseStatus(HttpStatus.CREATED) // 201
     @PostMapping("/add")
     public Patient create(@Valid @RequestBody Patient patient) {
         return patientService.addPatient(patient);
     }
-//
-//    @PutMapping
-//    public Patient update(@RequestBody Patient patient) {
-//        Patient response = patientService.updatePatient(patient);
-//        return response;
-//    }
-//
-//    @ResponseStatus(HttpStatus.NO_CONTENT) //204
-//    @DeleteMapping("/{id}")
-//    public void delete(@PathVariable Long id) {
-//        patientService.deletePatient(id);
-//    }
 
-    @GetMapping("")
-    public String listPatients(Model model) {
-        List<Patient> patients = patientService.findAll();
-        model.addAttribute("patients", patients);
-        return "patients"; // The name of your Thymeleaf template
+    @PutMapping
+    public Patient update(@RequestBody Patient patient) {
+        Patient response = patientService.updatePatient(patient);
+        return response;
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT) //204
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        patientService.deletePatient(id);
+    }
+
 
     // Exception handler for validation errors
 //    @ExceptionHandler(MethodArgumentNotValidException.class)

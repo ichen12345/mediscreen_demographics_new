@@ -23,33 +23,5 @@ public class MediscreenApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MediscreenApplication.class, args);
 	}
-	@Autowired
-	PatientRepository patientRepository;
 
-	// Run this if app.db.init.enabled = true
-//	@Bean
-//	@ConditionalOnProperty(prefix = "app", name = "db.init.enabled", havingValue = "true")
-//	public CommandLineRunner demoCommandLineRunner() {
-//		return args -> {
-//
-//			System.out.println("Running.....");
-//
-//			LocalDate p1Dob = LocalDate.of(1966, 12, 30);
-//			Date p1DobSql = Date.valueOf(p1Dob);
-//
-//			LocalDate p2Dob = LocalDate.of(1945, 6, 24);
-//			Date p2DobSql = Date.valueOf(p2Dob);
-//
-//			LocalDate p3Dob = LocalDate.of(2004, 6, 18);
-//			Date p3DobSql = Date.valueOf(p3Dob);
-//
-//			Patient p1 = new Patient("Test", "TestNone", "F", "1 Brookside St", "100-222-3333", p1DobSql);
-//			Patient p2 = new Patient("Test", "TestBorderline", "M", "2 High St", "200-333-4444", p2DobSql);
-//			Patient p3 = new Patient("Test", "TestInDanger", "M", "3 Club Road", "300-444-5555", p3DobSql);
-//
-//
-//			patientRepository.saveAll(List.of(p1, p2, p3));
-//
-//		};
-//	}
 }
