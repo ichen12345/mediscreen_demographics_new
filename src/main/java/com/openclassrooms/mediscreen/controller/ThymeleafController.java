@@ -18,53 +18,13 @@ public class ThymeleafController {
     @Autowired
     PatientService patientService;
 
-//    @GetMapping
-//    public List<Patient> findAll() {
-//        return patientService.findAll();
-//    }
-
-//    @GetMapping("/{id}")
-//    public Patient findAPatient(@PathVariable Long id) {
-//        return patientService.findAPatient(id);
-//    }
-//
-//    @Validated
-//    @ResponseStatus(HttpStatus.CREATED) // 201
-//    @PostMapping("/add")
-//    public Patient create(@Valid @RequestBody Patient patient) {
-//        return patientService.addPatient(patient);
-//    }
-//
-//    @PutMapping
-//    public Patient update(@RequestBody Patient patient) {
-//        Patient response = patientService.updatePatient(patient);
-//        return response;
-//    }
-//
-//    @ResponseStatus(HttpStatus.NO_CONTENT) //204
-//    @DeleteMapping("/{id}")
-//    public void delete(@PathVariable Long id) {
-//        patientService.deletePatient(id);
-//    }
-
     @GetMapping("")
     public String listPatients(Model model) {
         List<Patient> patients = patientService.findAll();
+        System.out.println("Patients: " + patients);
         model.addAttribute("patients", patients);
-        return "patients"; // The name of your Thymeleaf template
+        return "all"; // The name of your Thymeleaf template
     }
 
-    // Exception handler for validation errors
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors().forEach((error) -> {
-//            String fieldName = ((FieldError) error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
-//        return ResponseEntity.badRequest().body(errors);
-//    }
 
 }

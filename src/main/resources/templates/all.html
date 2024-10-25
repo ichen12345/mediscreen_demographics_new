@@ -19,7 +19,7 @@
         <td th:text="${patient.id}"></td>
         <td th:text="${patient.given} + ' ' + ${patient.family}"></td>
         <td th:text="${patient.address}"></td>
-        <td th:text="${#dates.format(patient.dob, 'yyyy-MM-dd')}"></td>
+        <td th:text="${#dates.format(patient.dob, 'yyyy-MM-dd')}"></td> <!-- SQL Date formatted -->
     </tr>
     </tbody>
 </table>
