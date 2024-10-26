@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -36,8 +37,9 @@ public class PatientServiceImpl implements PatientService{
     public Patient updatePatient(Patient patient) {
         Patient original = patientRepository.findById(patient.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+
         original.setAddress(patient.getAddress());
-        original.setDob(patient.getDob());
+        original.setDob(new java.sql.Date(patient.getDob().getTime()));
         original.setSex(patient.getSex());
         original.setPhone(patient.getPhone());
 
@@ -55,5 +57,10 @@ public class PatientServiceImpl implements PatientService{
     @Override
     public Patient findAPatient(Long id) {
         return patientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+    }
+
+    @Override
+    public Optional<Patient> findByFamilyAndGiven(String family, String given) {
+        return patientRepository.findByFamilyAndGiven(family, given);
     }
 }

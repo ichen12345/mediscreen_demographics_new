@@ -44,6 +44,7 @@ public class PatientController {
 
     @PutMapping
     public Patient update(@RequestBody Patient patient) {
+        System.out.println("Received Patient: " + patient);
         Patient response = patientService.updatePatient(patient);
         return response;
     }
@@ -54,6 +55,12 @@ public class PatientController {
         patientService.deletePatient(id);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Patient> getPatientByNames(@RequestParam String family, @RequestParam String given) {
+        return patientService.findByFamilyAndGiven(family, given)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
 
     // Exception handler for validation errors
 //    @ExceptionHandler(MethodArgumentNotValidException.class)

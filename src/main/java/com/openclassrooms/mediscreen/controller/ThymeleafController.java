@@ -26,5 +26,17 @@ public class ThymeleafController {
         return "all"; // The name of your Thymeleaf template
     }
 
+    @GetMapping("/edit/{id}")
+    public String editPatientForm(@PathVariable Long id, Model model) {
+        Patient patient = patientService.findAPatient(id); // Fetch the patient by ID
+        model.addAttribute("patient", patient);
+        return "edit"; // Return the edit patient view
+    }
+    @PostMapping("/update")
+    public String updatePatient(@ModelAttribute Patient patient) {
+        patientService.updatePatient(patient); // Save the updated patient
+        return "redirect:/patients"; // Redirect to the patients list
+    }
+
 
 }

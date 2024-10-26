@@ -12,6 +12,7 @@
         <th>Name</th>
         <th>Address</th>
         <th>DOB</th>
+        <th>Edit</th>
     </tr>
     </thead>
     <tbody>
@@ -19,7 +20,10 @@
         <td th:text="${patient.id}"></td>
         <td th:text="${patient.given} + ' ' + ${patient.family}"></td>
         <td th:text="${patient.address}"></td>
-        <td th:text="${#dates.format(patient.dob, 'yyyy-MM-dd')}"></td> <!-- SQL Date formatted -->
+        <td th:text="${#dates.format(patient.dob, 'yyyy-MM-dd')}"></td>
+        <td>
+            <a th:href="@{/patients/edit/{id}(id=${patient.id})}">Edit</a>
+        </td>
     </tr>
     </tbody>
 </table>
