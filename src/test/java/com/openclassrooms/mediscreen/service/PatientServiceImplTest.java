@@ -74,23 +74,24 @@ public class PatientServiceImplTest {
         // Mock the repository to return the original patient when found
         when(patientRepository.findById(patient.getId())).thenReturn(Optional.of(patient));
 
-        // Prepare the updated patient details
-        Patient updatedPatient = new Patient();
-        updatedPatient.setId(1L);
-        updatedPatient.setAddress("456 New St"); // Update the address
+        // Set updated fields on the patient object
+        patient.setAddress("456 New St");
+        patient.setDob(Date.valueOf("1990-10-16")); // Update DOB
 
         // Mock the save method to return the updated patient
-        when(patientRepository.save(any(Patient.class))).thenReturn(updatedPatient);
+        when(patientRepository.save(any(Patient.class))).thenReturn(patient);
 
-        // Call the service method
-        Patient result = patientService.updatePatient(updatedPatient);
+        // Call the service method with the modified patient
+        Patient result = patientService.updatePatient(patient);
 
         // Verify the results
         assertNotNull(result);
-        assertEquals(updatedPatient.getAddress(), result.getAddress());
+        assertEquals("456 New St", result.getAddress());
+        assertEquals(Date.valueOf("1990-10-16"), result.getDob());
         verify(patientRepository, times(1)).findById(patient.getId());
         verify(patientRepository, times(1)).save(patient);
     }
+
 
 
     @Test
@@ -148,4 +149,38 @@ public class PatientServiceImplTest {
         assertEquals("Patient not found", exception.getMessage());
         verify(patientRepository, times(1)).findById(patient.getId());
     }
+
+    @Test
+    public void testFindByFamilyAndGiven_PatientFound() {
+        // Mock a patient
+        Patient patient = new Patient();
+        patient.setFamily("Doe");
+        patient.setGiven("John");
+
+        // Mock the repository response
+        when(patientRepository.findByFamilyAndGiven("Doe", "John")).thenReturn(Optional.of(patient));
+
+        // Call the service method
+        Optional<Patient> result = patientService.findByFamilyAndGiven("Doe", "John");
+
+        // Verify the result
+        assertTrue(result.isPresent());
+        assertEquals("Doe", result.get().getFamily());
+        assertEquals("John", result.get().getGiven());
+        verify(patientRepository, times(1)).findByFamilyAndGiven("Doe", "John");
+    }
+
+    @Test
+    public void testFindByFamilyAndGiven_PatientNotFound() {
+        // Mock the repository to return an empty Optional
+        when(patientRepository.findByFamilyAndGiven("Doe", "Jane")).thenReturn(Optional.empty());
+
+        // Call the service method
+        Optional<Patient> result = patientService.findByFamilyAndGiven("Doe", "Jane");
+
+        // Verify the result
+        assertFalse(result.isPresent());
+        verify(patientRepository, times(1)).findByFamilyAndGiven("Doe", "Jane");
+    }
+
 }
