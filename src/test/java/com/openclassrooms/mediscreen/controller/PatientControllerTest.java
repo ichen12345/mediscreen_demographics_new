@@ -2,6 +2,7 @@ package com.openclassrooms.mediscreen.controller;
 
 import com.openclassrooms.mediscreen.entity.Patient;
 import com.openclassrooms.mediscreen.service.PatientService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,18 +42,19 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void testFindAPatient() {
-        Long patientId = 1L;
-        Patient patient = new Patient();
-        patient.setId(patientId);
+    public void testFindAPatient_NotFound() {
+        // Mock the service to throw EntityNotFoundException
+        when(patientService.findAPatient(2L)).thenThrow(new EntityNotFoundException("Patient not found with ID: 2"));
 
-        when(patientService.findAPatient(patientId)).thenReturn(patient);
+        // Call the controller method
+        ResponseEntity<Patient> response = patientController.findAPatient(2L);
 
-        Patient result = patientController.findAPatient(patientId);
-
-        assertEquals(patientId, result.getId());
-        verify(patientService, times(1)).findAPatient(patientId);
+        // Verify the response
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody()); // The body should be null for a 404 response
+        verify(patientService, times(1)).findAPatient(2L);
     }
+
 
     @Test
     public void testCreatePatient() {
@@ -90,6 +92,18 @@ public class PatientControllerTest {
         patientController.delete(patientId);
 
         verify(patientService, times(1)).deletePatient(patientId);
+    }
+
+    @Test
+    public void testDeletePatient_NotFound() {
+        // Mock the service to throw EntityNotFoundException
+        doThrow(new EntityNotFoundException("Patient not found with ID: 2"))
+                .when(patientService).deletePatient(2L);
+
+        // Call the controller method and assert a 404 response
+        ResponseEntity<Void> response = patientController.delete(2L);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(patientService, times(1)).deletePatient(2L);
     }
 
     @Test

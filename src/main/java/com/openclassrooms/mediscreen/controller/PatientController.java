@@ -2,6 +2,7 @@ package com.openclassrooms.mediscreen.controller;
 
 import com.openclassrooms.mediscreen.entity.Patient;
 import com.openclassrooms.mediscreen.service.PatientService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,15 @@ public class PatientController {
     }
 
     @GetMapping("/{id}")
-    public Patient findAPatient(@PathVariable Long id) {
-        return patientService.findAPatient(id);
+    public ResponseEntity<Patient> findAPatient(@PathVariable Long id) {
+        try {
+            Patient patient = patientService.findAPatient(id);
+            return ResponseEntity.ok(patient); // Return 200 OK with the patient data
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Return 404 Not Found
+        }
     }
+
 
     @Validated
     @ResponseStatus(HttpStatus.CREATED) // 201
@@ -43,8 +50,13 @@ public class PatientController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT) //204
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        patientService.deletePatient(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        try {
+            patientService.deletePatient(id);
+            return ResponseEntity.noContent().build(); // 204 No Content if delete successful
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found if ID does not exist
+        }
     }
 
     @GetMapping("/search")

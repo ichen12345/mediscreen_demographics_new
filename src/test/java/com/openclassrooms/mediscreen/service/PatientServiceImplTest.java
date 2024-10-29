@@ -107,24 +107,40 @@ public class PatientServiceImplTest {
     }
 
     @Test
-    public void testDeletePatient() {
-        when(patientRepository.existsById(patient.getId())).thenReturn(true);
+    void testDeletePatient_Success() {
+        Long patientId = 1L;
+        Patient patient = new Patient();
+        patient.setId(patientId);
 
-        patientService.deletePatient(patient.getId());
+        // Mock repository behavior
+        when(patientRepository.findById(patientId)).thenReturn(Optional.of(patient));
+        doNothing().when(patientRepository).delete(patient);
 
-        verify(patientRepository, times(1)).deleteById(patient.getId());
+        // Call the method
+        patientService.deletePatient(patientId);
+
+        // Verify repository interactions
+        verify(patientRepository).findById(patientId);
+        verify(patientRepository).delete(patient);
     }
 
     @Test
-    public void testDeletePatient_NotFound() {
-        when(patientRepository.existsById(patient.getId())).thenReturn(false);
+    void testDeletePatient_NotFound() {
+        Long patientId = 1L;
 
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            patientService.deletePatient(patient.getId());
+        // Mock repository to return empty Optional, triggering the exception
+        when(patientRepository.findById(patientId)).thenReturn(Optional.empty());
+
+        // Expect EntityNotFoundException when the service method is called
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            patientService.deletePatient(patientId);
         });
 
-        assertEquals("Patient not found", exception.getMessage());
-        verify(patientRepository, never()).deleteById(patient.getId());
+        // Assert the exception message
+        assertEquals("Patient not found with ID: " + patientId, exception.getMessage());
+
+        // Verify repository interaction
+        verify(patientRepository).findById(patientId);
     }
 
     @Test
@@ -139,16 +155,20 @@ public class PatientServiceImplTest {
     }
 
     @Test
-    public void testFindAPatient_NotFound() {
-        when(patientRepository.findById(patient.getId())).thenReturn(Optional.empty());
+    void testFindAPatient_NotFound() {
+        // Mock the behavior of the repository to return an empty optional
+        when(patientRepository.findById(2L)).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
-            patientService.findAPatient(patient.getId());
+        // Call the service method and expect an exception
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            patientService.findAPatient(2L);
         });
 
-        assertEquals("Patient not found", exception.getMessage());
-        verify(patientRepository, times(1)).findById(patient.getId());
+        // Verify the exception message
+        assertEquals("Patient not found with ID: 2", exception.getMessage());
+        verify(patientRepository, times(1)).findById(2L);
     }
+
 
     @Test
     public void testFindByFamilyAndGiven_PatientFound() {

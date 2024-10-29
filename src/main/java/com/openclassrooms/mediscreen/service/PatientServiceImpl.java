@@ -48,15 +48,15 @@ public class PatientServiceImpl implements PatientService{
 
     @Override
     public void deletePatient(Long id) {
-        if (!patientRepository.existsById(id)) {
-            throw new EntityNotFoundException("Patient not found");
-        }
-        patientRepository.deleteById(id);
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Patient not found with ID: " + id));
+        patientRepository.delete(patient);
     }
 
     @Override
     public Patient findAPatient(Long id) {
-        return patientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        return patientRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Patient not found with ID: " + id));
     }
 
     @Override
