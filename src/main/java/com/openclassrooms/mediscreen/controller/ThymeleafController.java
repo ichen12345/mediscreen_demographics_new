@@ -35,8 +35,18 @@ public class ThymeleafController {
     @PostMapping("/update")
     public String updatePatient(@ModelAttribute Patient patient) {
         patientService.updatePatient(patient); // Save the updated patient
-        return "redirect:/patients"; // Redirect to the patients list
+        return "redirect:/patients"; // Redirect to the patients list page
     }
 
+    @GetMapping("/add")
+    public String showAddPatientForm(Model model) {
+        model.addAttribute("patient", new Patient());
+        return "add"; // Add patient form page
+    }
 
+    @PostMapping("/add")
+    public String addPatient(@ModelAttribute Patient patient) {
+        patientService.addPatient(patient);
+        return "redirect:/patients"; // Redirect to the patients list page
+    }
 }

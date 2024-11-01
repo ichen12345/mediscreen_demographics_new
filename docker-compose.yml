@@ -6,7 +6,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_URL: jdbc:postgresql://dbpostgresql:5432/demographics
-#    image: app-springboot-postgresql
     build: ./
     ports:
       - "8081:8081"
@@ -33,4 +32,3 @@ networks:
 
 volumes:
   postgres_data:
-

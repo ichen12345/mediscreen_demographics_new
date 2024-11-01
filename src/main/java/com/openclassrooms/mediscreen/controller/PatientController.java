@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+/**
+ * Handle requests for patients
+ */
 @RestController
 @RequestMapping("/api/patients")
 public class PatientController {
@@ -23,6 +27,12 @@ public class PatientController {
         return patientService.findAll();
     }
 
+    /**
+     * find a patient by id
+     *
+     * @param id patient id
+     * @return patient
+     */
     @GetMapping("/{id}")
     public ResponseEntity<Patient> findAPatient(@PathVariable Long id) {
         try {
