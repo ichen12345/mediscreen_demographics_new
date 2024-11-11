@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,9 +12,7 @@ import java.sql.Date;
 
 @Entity
 @Data
-//@AllArgsConstructor
 @NoArgsConstructor
-//@Builder
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,12 +49,5 @@ public class Patient {
         this.phone = phone;
         this.dob = dob;
     }
-//    public Patient(Long id, String sex, String address, String phone, Date dob, String note) {
-//        this.id = id;
-//        this.sex = sex;
-//        this.address = address;
-//        this.phone = phone;
-//        this.dob = dob;
-//    }
 
 }

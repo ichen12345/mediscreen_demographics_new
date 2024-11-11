@@ -27,7 +27,6 @@ public class PatientControllerTest {
     @Mock
     private PatientService patientService;
 
-
     @Test
     public void testFindAllPatients() {
         List<Patient> patients = new ArrayList<>();
@@ -39,6 +38,32 @@ public class PatientControllerTest {
 
         assertEquals(1, result.size());
         verify(patientService, times(1)).findAll();
+    }
+
+    @Test
+    public void testFindAPatient_Success() {
+        // Mock the patientService to return a valid patient
+        Patient patient = new Patient();
+        patient.setId(1L);
+        patient.setGiven("John");
+        patient.setFamily("Doe");
+        patient.setAddress("123 Main St");
+        patient.setDob(java.sql.Date.valueOf("1990-10-15"));
+        patient.setSex("M");
+        patient.setPhone("100-222-3333");
+
+        when(patientService.findAPatient(1L)).thenReturn(patient);
+
+        // Call the controller method
+        ResponseEntity<Patient> response = patientController.findAPatient(1L);
+
+        // Verify the response
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(patient.getId(), response.getBody().getId());
+        assertEquals(patient.getGiven(), response.getBody().getGiven());
+        assertEquals(patient.getFamily(), response.getBody().getFamily());
+        verify(patientService, times(1)).findAPatient(1L);
     }
 
     @Test
@@ -54,7 +79,6 @@ public class PatientControllerTest {
         assertNull(response.getBody()); // The body should be null for a 404 response
         verify(patientService, times(1)).findAPatient(2L);
     }
-
 
     @Test
     public void testCreatePatient() {
@@ -145,21 +169,4 @@ public class PatientControllerTest {
         verify(patientService, times(1)).findByFamilyAndGiven(familyName, givenName);
     }
 
-//    @Test
-//    public void testHandleValidationExceptions() {
-//        MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
-//        Map<String, String> errors = new HashMap<>();
-//        errors.put("given", "Given name is mandatory");
-//
-//        FieldError fieldError = mock(FieldError.class);
-//        when(fieldError.getField()).thenReturn("given");
-//        when(fieldError.getDefaultMessage()).thenReturn("Given name is mandatory");
-//
-//        when(exception.getBindingResult().getAllErrors()).thenReturn(List.of(fieldError));
-//
-//        ResponseEntity<Map<String, String>> response = patientController.handleValidationExceptions(exception);
-//
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-//        assertEquals(errors, response.getBody());
-//    }
 }

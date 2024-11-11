@@ -22,6 +22,11 @@ public class PatientController {
     @Autowired
     PatientService patientService;
 
+    /**
+     * find all patient
+     *
+     * @return list of patients
+     */
     @GetMapping
     public List<Patient> findAll() {
         return patientService.findAll();
@@ -43,7 +48,11 @@ public class PatientController {
         }
     }
 
-
+    /**
+     * add a patient
+     *
+     * @return the added patient
+     */
     @Validated
     @ResponseStatus(HttpStatus.CREATED) // 201
     @PostMapping("/add")
@@ -51,6 +60,11 @@ public class PatientController {
         return patientService.addPatient(patient);
     }
 
+    /**
+     * update an existing patient
+     *
+     * @return the updated patient
+     */
     @PutMapping
     public Patient update(@RequestBody Patient patient) {
         System.out.println("Received Patient: " + patient);
@@ -58,6 +72,11 @@ public class PatientController {
         return response;
     }
 
+    /**
+     * delete a patient by id
+     *
+     * @param id patient id
+     */
     @ResponseStatus(HttpStatus.NO_CONTENT) //204
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -69,24 +88,18 @@ public class PatientController {
         }
     }
 
+    /**
+     * find a patient by their family and given names
+     *
+     * @param family
+     * @param given
+     * @return patient
+     */
     @GetMapping("/search")
     public ResponseEntity<Patient> getPatientByNames(@RequestParam String family, @RequestParam String given) {
         return patientService.findByFamilyAndGiven(family, given)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
-
-    // Exception handler for validation errors
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-//        Map<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors().forEach((error) -> {
-//            String fieldName = ((FieldError) error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//            errors.put(fieldName, errorMessage);
-//        });
-//        return ResponseEntity.badRequest().body(errors);
-//    }
 
 }
