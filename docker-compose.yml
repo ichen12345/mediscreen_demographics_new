@@ -1,7 +1,8 @@
 version: '3.1'
+
 services:
   demographics:
-    container_name: app-springboot-postgresql
+    container_name: app-demographics
     environment:
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_DATASOURCE_USERNAME: postgres
@@ -12,7 +13,7 @@ services:
     depends_on:
       - dbpostgresql
     networks:
-      - springboot-network
+      - app-network  # Use the same network as the other services
 
   dbpostgresql:
     image: postgres
@@ -25,10 +26,10 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - springboot-network
+      - app-network
 
 networks:
-  springboot-network:
+  app-network: {}
 
 volumes:
   postgres_data:
