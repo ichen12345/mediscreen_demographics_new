@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -23,6 +24,9 @@ class ThymeleafControllerTest {
 
     @Mock
     private Model model;
+
+    @Mock
+    private BindingResult bindingResult;
 
     @InjectMocks
     private ThymeleafController thymeleafController;
@@ -63,26 +67,52 @@ class ThymeleafControllerTest {
     }
 
     @Test
-    void testUpdatePatient() {
-        String viewName = thymeleafController.updatePatient(testPatient);
-
-        verify(patientService, times(1)).updatePatient(testPatient);
-        assertEquals("redirect:/patients", viewName);
-    }
-
-    @Test
     void testShowAddPatientForm() {
         String viewName = thymeleafController.showAddPatientForm(model);
 
-        verify(model, times(1)).addAttribute(eq("patient"), any(Patient.class));
+        verify(model, times(1)).addAttribute("patient", new Patient());
         assertEquals("add", viewName);
     }
 
     @Test
-    void testAddPatient() {
-        String viewName = thymeleafController.addPatient(testPatient);
+    void testAddPatientWithValidData() {
+        when(bindingResult.hasErrors()).thenReturn(false); // Simulate no validation errors
 
-        verify(patientService, times(1)).addPatient(testPatient);
-        assertEquals("redirect:/patients", viewName);
+        String viewName = thymeleafController.addPatient(testPatient, bindingResult, model);
+
+        verify(patientService, times(1)).addPatient(testPatient); // Verify the service method is called
+        assertEquals("redirect:/patients", viewName); // Check redirection to patients list
+    }
+
+    @Test
+    void testAddPatientWithValidationErrors() {
+        when(bindingResult.hasErrors()).thenReturn(true); // Simulate validation errors
+
+        String viewName = thymeleafController.addPatient(testPatient, bindingResult, model);
+
+        verify(patientService, times(0)).addPatient(testPatient); // Service should not be called
+        verify(model, times(1)).addAttribute("patient", testPatient); // Verify patient is added to model
+        assertEquals("add", viewName); // Return to the add form with errors
+    }
+
+    @Test
+    void testUpdatePatientWithValidData() {
+        when(bindingResult.hasErrors()).thenReturn(false); // Simulate no validation errors
+
+        String viewName = thymeleafController.updatePatient(testPatient, bindingResult, model);
+
+        verify(patientService, times(1)).updatePatient(testPatient); // Verify the service method is called
+        assertEquals("redirect:/patients", viewName); // Check redirection to patients list
+    }
+
+    @Test
+    void testUpdatePatientWithValidationErrors() {
+        when(bindingResult.hasErrors()).thenReturn(true); // Simulate validation errors
+
+        String viewName = thymeleafController.updatePatient(testPatient, bindingResult, model);
+
+        verify(patientService, times(0)).updatePatient(testPatient); // Service should not be called
+        verify(model, times(1)).addAttribute("patient", testPatient); // Verify patient is added to model
+        assertEquals("edit", viewName); // Return to the edit form with errors
     }
 }
