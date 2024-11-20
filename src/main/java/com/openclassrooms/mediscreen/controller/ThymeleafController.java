@@ -4,11 +4,9 @@ import com.openclassrooms.mediscreen.entity.Patient;
 import com.openclassrooms.mediscreen.service.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,7 +49,7 @@ public class ThymeleafController {
         return "redirect:/patients"; // Redirect to the patients list page if valid
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public String updatePatient(@Valid @ModelAttribute Patient patient, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             // If validation fails, return the "edit" form again with error messages

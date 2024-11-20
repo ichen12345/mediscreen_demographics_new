@@ -7,7 +7,7 @@
 <h1>Edit Patient</h1>
 
 <!-- Form for editing patient information -->
-<form th:action="@{/patients/update}" method="post" th:object="${patient}">
+<form th:action="@{/patients/update}" method="put" th:object="${patient}">
     <input type="hidden" th:field="*{id}"/> <!-- Hidden field for patient ID -->
 
     <div>
